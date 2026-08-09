@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JP Consulting — AI & Technology Transformation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FAFAF8;
+      --ink: #1A1A1A;
+      --ink-muted: #6B6B68;
+      --accent: #2B5BE0;
+      --accent-light: #EEF2FD;
+      --rule: #E8E8E4;
+      --white: #FFFFFF;
+      --font-display: 'DM Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 56px;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--rule); }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 56px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    canvas#nodes {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 28px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 5.5vw, 72px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      max-width: 520px;
+      margin-bottom: 44px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-block;
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 30px;
+      border-radius: 8px;
+      border: 1.5px solid var(--rule);
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--ink-muted); transform: translateY(-1px); }
+
+    .hero-stats {
+      position: relative; z-index: 2;
+      margin-top: auto;
+      display: flex; gap: 48px;
+      padding-top: 64px;
+      align-self: flex-end;
+    }
+
+    .stat-num {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+
+    /* ── SECTION SHELL ── */
+    section { padding: 96px 56px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; max-width: 48px;
+      height: 1px; background: var(--rule);
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 3.5vw, 46px);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+      color: var(--ink);
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--white); border-top: 1px solid var(--rule); }
+
+    .services-header {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      align-items: end; margin-bottom: 64px;
+    }
+    .services-header p {
+      font-size: 16px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--white);
+      padding: 40px 36px;
+      transition: background 0.2s;
+    }
+    .service-card:hover { background: var(--bg); }
+
+    .service-icon {
+      width: 44px; height: 44px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .service-icon svg { width: 22px; height: 22px; stroke: var(--accent); }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .service-card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    /* ── APPROACH ── */
+    #approach { border-top: 1px solid var(--rule); }
+
+    .approach-layout {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .approach-left h2 { margin-bottom: 20px; }
+    .approach-left p {
+      font-size: 16px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .approach-steps { display: flex; flex-direction: column; gap: 0; }
+    .approach-step {
+      display: flex; gap: 24px;
+      padding: 28px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .step-marker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      padding-top: 3px;
+      min-width: 28px;
+    }
+    .step-body h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .step-body p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    /* ── EXPERTISE ── */
+    #expertise { background: var(--ink); border-top: 1px solid #2A2A2A; }
+    #expertise .section-label { color: #6B6B68; }
+    #expertise .section-label::after { background: #2A2A2A; }
+    #expertise h2 { color: var(--white); }
+
+    .expertise-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 48px;
+      margin-bottom: 64px;
+    }
+    .expertise-header p {
+      font-size: 16px;
+      color: #8A8A87;
+      line-height: 1.7;
+      max-width: 400px;
+    }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .expertise-card {
+      background: #222222;
+      border: 1px solid #2E2E2E;
+      border-radius: 10px;
+      padding: 28px 24px;
+      transition: border-color 0.2s;
+    }
+    .expertise-card:hover { border-color: #3A3A3A; }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: rgba(43,91,224,0.12);
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .expertise-card h4 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .expertise-card p {
+      font-size: 13px;
+      color: #6B6B68;
+      line-height: 1.6;
+    }
+
+    /* ── ABOUT ── */
+    #about { border-top: 1px solid var(--rule); }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text h2 { margin-bottom: 20px; }
+    .about-text p {
+      font-size: 16px;
+      color: var(--ink-muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .about-text p:last-of-type { margin-bottom: 36px; }
+
+    .about-credentials {
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 32px;
+    }
+    .credential {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .credential:last-child { border-bottom: none; padding-bottom: 0; }
+    .credential:first-child { padding-top: 0; }
+
+    .cred-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .credential p {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .credential span {
+      font-size: 12px;
+      color: var(--ink-muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--accent-light);
+      border-top: 1px solid #D4DFF7;
+    }
+
+    .contact-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-inner .section-label {
+      justify-content: center;
+    }
+    .contact-inner .section-label::after { display: none; }
+
+    .contact-inner h2 { margin-bottom: 16px; }
+    .contact-inner p {
+      font-size: 16px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .contact-form {
+      display: flex; flex-direction: column; gap: 16px;
+      text-align: left;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--white);
+      border: 1.5px solid var(--rule);
+      border-radius: 8px;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+    .form-group textarea { min-height: 110px; }
+
+    .form-submit {
+      background: var(--accent);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      align-self: flex-start;
+    }
+    .form-submit:hover { opacity: 0.88; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 56px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .footer-logo span { color: var(--accent); }
+    footer p {
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--ink); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      section { padding: 72px 24px; }
+      .hero { padding: 100px 24px 64px; flex-direction: column; }
+      .hero-stats { padding-top: 48px; gap: 32px; }
+      .services-header, .approach-layout, .about-layout,
+      .expertise-header { grid-template-columns: 1fr; gap: 32px; }
+      .services-grid, .expertise-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+    @media (max-width: 560px) {
+      .services-grid, .expertise-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      canvas#nodes { display: none; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a class="nav-logo" href="#">JP<span>.</span>Consulting</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Get in touch</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <canvas id="nodes"></canvas>
+    <div class="hero-content">
+      <div class="eyebrow">AI &amp; Technology Transformation</div>
+      <h1>Enterprise AI<br/>that <em>works</em><br/>in the real world.</h1>
+      <p class="hero-sub">
+        JP Consulting helps financial services and enterprise organizations design, deploy, and govern AI systems that create lasting operational value — not proof-of-concepts that stall.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#contact">Start a conversation</a>
+        <a class="btn-ghost" href="#services">View our services</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Years enterprise experience</div>
+      </div>
+      <div>
+        <div class="stat-num">$2B+</div>
+        <div class="stat-label">Assets under AI-assisted analysis</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Continents served</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="section-label">What we do</div>
+      <div class="services-header">
+        <h2>Services built for complex organizations</h2>
+        <p>We work at the intersection of AI capability and enterprise reality — navigating compliance requirements, legacy infrastructure, and change management to deliver systems your teams actually use.</p>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+          </div>
+          <h3>AI Strategy & Roadmapping</h3>
+          <p>From opportunity assessment through business-case development, we help leadership teams build AI strategies that align with risk appetite, regulatory requirements, and competitive position.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+          </div>
+          <h3>Enterprise LLM Deployment</h3>
+          <p>Architecture, security review, and deployment of large language model systems — including RAG pipelines, agentic workflows, and LLMOps on Azure AI Foundry and OpenAI.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>AI Governance & Policy</h3>
+          <p>Data classification frameworks, acceptable-use policies, CISO-ready approval documentation, and model risk management protocols tailored to regulated industries.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <h3>Data & Analytics Modernization</h3>
+          <p>Cloud data architecture on Azure SQL MI, Databricks Lakehouse, and Power BI — enabling the data foundation that enterprise AI requires to function reliably.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </div>
+          <h3>Workflow Automation</h3>
+          <p>Power Automate, Microsoft Graph API, and Azure Functions — turning manual, high-frequency processes into auditable automated pipelines integrated with your existing systems.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Team Enablement</h3>
+          <p>Structured training, prompting frameworks, and AI literacy programs that build durable internal capability — so your organization becomes less reliant on consultants over time.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section id="approach">
+    <div class="section-inner">
+      <div class="section-label">How we work</div>
+      <div class="approach-layout">
+        <div class="approach-left">
+          <h2>Rigorous process. Practical outcomes.</h2>
+          <p>We don't believe in transformation theater. Every engagement starts with a clear picture of what your organization can realistically absorb — and builds from there.</p>
+          <a class="btn-primary" href="#contact">Discuss your project</a>
+        </div>
+        <div class="approach-steps">
+          <div class="approach-step">
+            <div class="step-marker">Discover</div>
+            <div class="step-body">
+              <h4>Current-state assessment</h4>
+              <p>We map your data landscape, identify high-value AI use cases, and audit technical and organizational readiness before any architecture decisions are made.</p>
+            </div>
+          </div>
+          <div class="approach-step">
+            <div class="step-marker">Design</div>
+            <div class="step-body">
+              <h4>Architecture & governance blueprint</h4>
+              <p>A detailed technical and policy design — covering data flows, security controls, model selection, and the governance framework that keeps it all defensible.</p>
+            </div>
+          </div>
+          <div class="approach-step">
+            <div class="step-marker">Build</div>
+            <div class="step-body">
+              <h4>Iterative, production-grade delivery</h4>
+              <p>We build in tight cycles, validating with end users and stakeholders at each stage. InfoSec documentation and change management materials ship alongside the code.</p>
+            </div>
+          </div>
+          <div class="approach-step">
+            <div class="step-marker">Sustain</div>
+            <div class="step-body">
+              <h4>Handover and capability transfer</h4>
+              <p>Full knowledge transfer, runbooks, and optional ongoing advisory — so your internal team owns what we built together.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section id="expertise">
+    <div class="section-inner">
+      <div class="section-label">Domain depth</div>
+      <div class="expertise-header">
+        <h2>Where we go deep</h2>
+        <p>Fifteen years of hands-on experience across alternative investments, financial services infrastructure, and enterprise cloud — not generalist advisory.</p>
+      </div>
+      <div class="expertise-grid">
+
+        <div class="expertise-card">
+          <div class="tag">Azure</div>
+          <h4>Azure AI Foundry &amp; OpenAI</h4>
+          <p>Production LLM deployments with Key Vault, Entra ID SSO, and full cost-tracking pipelines.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">Data</div>
+          <h4>SQL MI &amp; Databricks</h4>
+          <p>Lakehouse architecture, Unity Catalog, NL-to-SQL with Genie, and Power BI reporting layers.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">Automation</div>
+          <h4>Power Platform &amp; Graph API</h4>
+          <p>End-to-end workflow automation across SharePoint, Outlook, Teams, and Salesforce.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">Finance</div>
+          <h4>Alternative Investments</h4>
+          <p>PE portfolio analysis, CLO data extraction, Treasury operations, and CRM automation for investment firms.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">AI/ML</div>
+          <h4>RAG &amp; Agentic Systems</h4>
+          <p>Document intelligence pipelines using Qdrant, LangChain, LangFlow, and custom embedding strategies.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">Security</div>
+          <h4>Enterprise AI Governance</h4>
+          <p>Data classification, acceptable-use policy, model risk frameworks, and CISO/CTO approval documentation.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">CRM</div>
+          <h4>Salesforce Administration</h4>
+          <p>AgentForce, Marketing Cloud migration, phishing-resistant MFA, and Azure AD SAML integration.</p>
+        </div>
+
+        <div class="expertise-card">
+          <div class="tag">DevOps</div>
+          <h4>Azure DevOps &amp; App Service</h4>
+          <p>Multi-LOB CI/CD pipelines, App Service Plan optimization, and secure Python deployment in regulated environments.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="section-label">About</div>
+      <div class="about-layout">
+        <div class="about-text">
+          <h2>Built on real enterprise experience</h2>
+          <p>
+            JP Consulting was founded by Jay Jena, a technology and AI leader with deep roots in alternative asset management and enterprise cloud infrastructure. His work spans Azure architecture, AI governance policy, data platform modernization, and the practical challenges of deploying AI in compliance-sensitive environments.
+          </p>
+          <p>
+            Where most consultants bring frameworks adapted from other industries, we bring direct, hands-on experience with the systems, workflows, and stakeholder dynamics specific to investment management and financial services. We've built the things we now advise on.
+          </p>
+          <a class="btn-ghost" href="#contact">Work with us</a>
+        </div>
+        <div class="about-credentials">
+          <div class="credential">
+            <div class="cred-dot"></div>
+            <div>
+              <p>Generative AI &amp; Agentic AI — Hands-on Lab Certification</p>
+              <span>Boston Institute of Analytics</span>
+            </div>
+          </div>
+          <div class="credential">
+            <div class="cred-dot"></div>
+            <div>
+              <p>VP &amp; Technology Lead, Alternative Investment Management</p>
+              <span>Global Asset Manager — 500+ employees</span>
+            </div>
+          </div>
+          <div class="credential">
+            <div class="cred-dot"></div>
+            <div>
+              <p>Enterprise Azure Architecture &amp; AI Governance</p>
+              <span>Azure AI Foundry · OpenAI · Databricks · Power Platform</span>
+            </div>
+          </div>
+          <div class="credential">
+            <div class="cred-dot"></div>
+            <div>
+              <p>Regulated industry AI deployment — compliance-first approach</p>
+              <span>Financial services · SEC/FINRA-adjacent environments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-inner">
+        <div class="section-label">Contact</div>
+        <h2>Let's talk about your project</h2>
+        <p>Whether you're starting from scratch or picking up where a previous initiative stalled, we're happy to have a frank conversation about what's realistic and what it takes to get there.</p>
+        <div class="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full name</label>
+              <input type="text" id="name" placeholder="Your name" />
+            </div>
+            <div class="form-group">
+              <label for="email">Work email</label>
+              <input type="email" id="email" placeholder="you@company.com" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="company">Company &amp; role</label>
+            <input type="text" id="company" placeholder="Acme Capital — CTO" />
+          </div>
+          <div class="form-group">
+            <label for="service">Area of interest</label>
+            <select id="service">
+              <option value="">Select a service area</option>
+              <option>AI Strategy &amp; Roadmapping</option>
+              <option>Enterprise LLM Deployment</option>
+              <option>AI Governance &amp; Policy</option>
+              <option>Data &amp; Analytics Modernization</option>
+              <option>Workflow Automation</option>
+              <option>Team Enablement</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Tell us about your situation</label>
+            <textarea id="message" placeholder="Brief description of what you're working on and where you're stuck…"></textarea>
+          </div>
+          <button class="form-submit" type="button" id="submit-btn" onclick="handleSubmit()">Send message →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">JP<span>.</span>Consulting</div>
+    <p>© 2026 JP Consulting. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#approach">Approach</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Node graph canvas animation (hero signature element)
+    const canvas = document.getElementById('nodes');
+    const ctx = canvas.getContext('2d');
+
+    let W, H, nodes = [], animId;
+    const NODE_COUNT = 55;
+    const MAX_DIST = 160;
+    const ACCENT = '#2B5BE0';
+
+    function resize() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+
+    function initNodes() {
+      nodes = [];
+      for (let i = 0; i < NODE_COUNT; i++) {
+        nodes.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r: Math.random() * 2.2 + 1,
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw edges
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            const alpha = (1 - dist / MAX_DIST) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(43, 91, 224, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes
+      for (const n of nodes) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(43, 91, 224, 0.3)';
+        ctx.fill();
+      }
+
+      // Move nodes
+      for (const n of nodes) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+      }
+
+      animId = requestAnimationFrame(draw);
+    }
+
+    const ro = new ResizeObserver(() => {
+      resize();
+      initNodes();
+    });
+    ro.observe(canvas);
+    resize();
+    initNodes();
+    draw();
+
+    // Form submit handler — Formspree
+    async function handleSubmit() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const service = document.getElementById('service').value;
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email) {
+        alert('Please fill in your name and email before sending.');
+        return;
+      }
+
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('https://formspree.io/f/mgawoqvz', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, company, service, message })
+        });
+
+        if (res.ok) {
+          btn.textContent = 'Message sent ✓';
+          btn.style.background = '#1a8a4a';
+          // Clear fields
+          ['name','email','company','message'].forEach(id => document.getElementById(id).value = '');
+          document.getElementById('service').selectedIndex = 0;
+        } else {
+          const data = await res.json();
+          btn.textContent = 'Send message →';
+          btn.disabled = false;
+          alert(data?.errors?.map(e => e.message).join(', ') || 'Something went wrong. Please try again.');
+        }
+      } catch (err) {
+        btn.textContent = 'Send message →';
+        btn.disabled = false;
+        alert('Network error — please check your connection and try again.');
+      }
+    }
+  </script>
+</body>
+</html>
