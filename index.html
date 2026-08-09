@@ -867,7 +867,7 @@
             <label for="message">Tell us about your situation</label>
             <textarea id="message" placeholder="Brief description of what you're working on and where you're stuck…"></textarea>
           </div>
-          <button class="form-submit" type="button" onclick="handleSubmit()">Send message →</button>
+          <button class="form-submit" type="button" id="submit-btn" onclick="handleSubmit()">Send message →</button>
         </div>
       </div>
     </div>
@@ -968,18 +968,47 @@
     initNodes();
     draw();
 
-    // Form submit handler
-    function handleSubmit() {
+    // Form submit handler — Formspree
+    async function handleSubmit() {
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const service = document.getElementById('service').value;
+      const message = document.getElementById('message').value.trim();
+
       if (!name || !email) {
         alert('Please fill in your name and email before sending.');
         return;
       }
-      const btn = document.querySelector('.form-submit');
-      btn.textContent = 'Message sent ✓';
-      btn.style.background = '#1a8a4a';
+
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Sending…';
       btn.disabled = true;
+
+      try {
+        const res = await fetch('https://formspree.io/f/mgawoqvz', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, company, service, message })
+        });
+
+        if (res.ok) {
+          btn.textContent = 'Message sent ✓';
+          btn.style.background = '#1a8a4a';
+          // Clear fields
+          ['name','email','company','message'].forEach(id => document.getElementById(id).value = '');
+          document.getElementById('service').selectedIndex = 0;
+        } else {
+          const data = await res.json();
+          btn.textContent = 'Send message →';
+          btn.disabled = false;
+          alert(data?.errors?.map(e => e.message).join(', ') || 'Something went wrong. Please try again.');
+        }
+      } catch (err) {
+        btn.textContent = 'Send message →';
+        btn.disabled = false;
+        alert('Network error — please check your connection and try again.');
+      }
     }
   </script>
 </body>
